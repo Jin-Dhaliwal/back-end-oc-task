@@ -29,16 +29,16 @@ class Chapter < ApplicationRecord
       room = self.rooms.create(number: i, final: i == self.rooms_count.to_i)
     end
 
-    room_numbers = (1..self.rooms_count.to_i-1).to_a
+    room_numbers = (1...self.rooms_count.to_i).to_a
 
     adj_matrix = Matrix.build(self.rooms_count.to_i){0}
     adj_arr = adj_matrix.to_a
     
     #build path
-    path_steps = rand(1..self.rooms_count.to_i-1)
+    path_steps = rand(1...self.rooms_count.to_i)
     current_room = 1
 
-    (1..path_steps-1).each do
+    (1...path_steps).each do
       next_room = (room_numbers - [current_room]).sample
       adj_arr[current_room-1][next_room-1] = 1
       current_room = next_room
@@ -55,6 +55,17 @@ class Chapter < ApplicationRecord
         next_room = unused_rooms.sample
         adj_arr[room_number-1][next_room-1] = 1
         unused_rooms = unused_rooms - [next_room]
+      end
+    end
+
+    #make sure every room is reachable (every column in matrix must contain a 1)
+    adj_matrix = Matrix[*adj_arr]
+
+    (0...self.rooms_count.to_i).each do |i|
+      col = adj_matrix.column(i)
+      unless col.to_a.include?(1)
+        from_room = room_numbers.sample
+        adj_arr[from_room-1][i] = 1
       end
     end
 
