@@ -22,6 +22,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
       t.inet     :last_sign_in_ip
 
       t.string   :name
+      t.integer  :team_id
 
       ## Confirmable
       # t.string   :confirmation_token

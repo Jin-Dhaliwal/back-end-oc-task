@@ -5,6 +5,8 @@ class Chapter < ApplicationRecord
   has_many :rooms, dependent: :destroy
   has_many :edges, dependent: :destroy
 
+  belongs_to :user_action
+
   validate :uniq_active
   validate :room_limits
   validate :unique_number

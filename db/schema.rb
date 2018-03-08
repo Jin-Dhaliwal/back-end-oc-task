@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227050318) do
+ActiveRecord::Schema.define(version: 20180308193542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,10 +49,17 @@ ActiveRecord::Schema.define(version: 20180227050318) do
     t.index ["door_id"], name: "index_rooms_on_door_id"
   end
 
+  create_table "teams", force: :cascade do |t|
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_actions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "chapter_id"
     t.bigint "room_id"
+    t.boolean "broadcasted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chapter_id"], name: "index_user_actions_on_chapter_id"
@@ -72,6 +79,7 @@ ActiveRecord::Schema.define(version: 20180227050318) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "name"
+    t.integer "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

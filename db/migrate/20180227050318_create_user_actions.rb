@@ -4,6 +4,7 @@ class CreateUserActions < ActiveRecord::Migration[5.1]
       t.references :user
       t.references :chapter
       t.references :room
+      t.boolean :broadcasted
 
       t.timestamps
     end

@@ -1,11 +1,16 @@
 class ChaptersController < ApplicationController
   before_action :set_chapter        , only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:room]
 
   def room
     room_number       = params[:room_number].to_i
     @active_chapter   = Chapter.active
     @room             = Room.active(@active_chapter).where(number: room_number).first
     @available_rooms  = @room.available_rooms
+    unless params[:following].present?
+      @user_action = UserAction.create(user_id: current_user.id, chapter_id: @active_chapter.id, room_id: @room.id)
+      ActionCable.server.broadcast("user_actions", room_number: @room.number)
+    end
   end
 
   # GET /chapters

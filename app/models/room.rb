@@ -4,6 +4,7 @@ class Room < ApplicationRecord
 
   belongs_to :chapter
   belongs_to :door
+  belongs_to :user_action
 
   has_many :edges, foreign_key: 'room_parent_id'
 
